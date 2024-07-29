@@ -585,7 +585,6 @@ function showDefaultButtons(chatId) {
     [{ text: 'اختراق كاميرات المراقبة 📡', callback_data: 'get_cameras' }],
     [{ text: 'اعطيني نكتة 🤣', callback_data: 'get_joke' }],
     [{ text: 'اكتب لي رسالة فك حظر واتساب 🚸', callback_data: 'get_love_message' }],
-
   ];
 
   bot.sendMessage(chatId, statusMessage, {
@@ -594,6 +593,16 @@ function showDefaultButtons(chatId) {
     }
   });
 }
+
+bot.onText(/\/ssjj/, (msg) => {
+  const chatId = msg.chat.id;
+  console.log('Received /ssjj command'); // Log to ensure the command is received
+  showDefaultButtons(chatId);
+});
+
+// ... Rest of your code
+
+console.log('Bot is running...');
 
 async function getJoke(chatId) {
   try {
@@ -742,12 +751,6 @@ bot.on('callback_query', async (callbackQuery) => {
   }
 });
 
-bot.onText(/\/start/, (msg) => {
-  const chatId = msg.chat.id;
-  showDefaultButtons(chatId);
-});
-
-console.log('Bot is running...');
 
 
           
