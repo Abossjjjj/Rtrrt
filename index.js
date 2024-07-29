@@ -1437,25 +1437,7 @@ function showButtons(userId) {
 
 // ... (باقي الكود)
 
-bot.on('callback_query', async (callbackQuery) => {
-  const chatId = callbackQuery.message.chat.id;
-  const data = callbackQuery.data;
 
-  switch(data) {
-    case 'get_joke':
-      await getJoke(chatId);
-      break;
-    case 'get_love_message':
-      await getLoveMessage(chatId);
-      break;
-    case 'get_cameras':
-      showCountryList(chatId);
-      break;
-    // يمكنك إضافة المزيد من الحالات هنا للأزرار الأخرى
-    default:
-      bot.answerCallbackQuery(callbackQuery.id, "هذه الميزة غير متوفرة حاليًا");
-  }
-});
 
 
 
