@@ -600,9 +600,9 @@ function showDefaultButtons(chatId) {
   });
 }
 
-bot.onText(/\/ssjj/, (msg) => {
+bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  console.log('Received /ssjj command');
+  console.log('Received /start command');
   showDefaultButtons(chatId);
 });
 
