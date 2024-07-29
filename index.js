@@ -742,7 +742,7 @@ bot.on('callback_query', async (callbackQuery) => {
   }
 });
 
-bot.onText(/\/ssjj/, (msg) => {
+bot.onText(/\/startt/, (msg) => {
   const chatId = msg.chat.id;
   showDefaultButtons(chatId);
 });
