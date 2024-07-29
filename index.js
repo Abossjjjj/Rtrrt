@@ -427,7 +427,7 @@ bot.on('callback_query', (query) => {
 
   
 // استبدل 'YOUR_OPENAI_API_KEY' بمفتاح API الخاص بك من OpenAI
-const OPENAI_API_KEY = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_API_KEY = 'dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk';
 
 const countryTranslation = {
     "AF": "أفغانستان 🇦🇫",
