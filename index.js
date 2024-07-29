@@ -578,6 +578,18 @@ const countryTranslation = {
 
     // ... إضافة بقية الدول هنا
 };
+
+const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
+
+// أدخل مفتاح البوت الخاص بك هنا
+const token = 'YOUR_TELEGRAM_BOT_API_KEY_HERE';
+
+// إنشاء البوت
+const bot = new TelegramBot(token, { polling: true });
+
+const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE';
+
 function showDefaultButtons(chatId) {
   let statusMessage = `مرحبًا! اختر أحد الخيارات التالية:`;
 
@@ -591,18 +603,39 @@ function showDefaultButtons(chatId) {
     reply_markup: {
       inline_keyboard: defaultButtons
     }
+  }).then(() => {
+    console.log('Buttons sent successfully');
+  }).catch((error) => {
+    console.error('Error sending buttons:', error);
   });
 }
 
 bot.onText(/\/ssjj/, (msg) => {
   const chatId = msg.chat.id;
-  console.log('Received /ssjj command'); // Log to ensure the command is received
+  console.log('Received /ssjj command');
   showDefaultButtons(chatId);
 });
 
-// ... Rest of your code
+bot.on('callback_query', async (callbackQuery) => {
+  const chatId = callbackQuery.message.chat.id;
+  const data = callbackQuery.data;
 
-console.log('Bot is running...');
+  if (data === 'get_joke') {
+    await getJoke(chatId);
+  } else if (data === 'get_love_message') {
+    await getLoveMessage(chatId);
+  } else if (data === 'get_cameras') {
+    showCountryList(chatId);
+  } else if (data.startsWith('country_')) {
+    const countryCode = data.split('_')[1];
+    await displayCameras(chatId, countryCode);
+  } else if (data.startsWith('next_') || data.startsWith('prev_')) {
+    const startIndex = parseInt(data.split('_')[1], 10);
+    showCountryList(chatId, startIndex);
+  } else {
+    bot.answerCallbackQuery(callbackQuery.id, "هذه الميزة غير متوفرة حاليًا");
+  }
+});
 
 async function getJoke(chatId) {
   try {
@@ -665,10 +698,10 @@ function showCountryList(chatId, startIndex = 0) {
 
   const navigationButtons = [];
   if (startIndex > 0) {
-    navigationButtons.push({ text: "السابق", callback_data:`prev_${startIndex - 99}` });
+    navigationButtons.push({ text: "السابق", callback_data: `prev_${startIndex - 99}` });
   }
   if (endIndex < countryCodes.length) {
-    navigationButtons.push({ text: "التالي", callback_data:`next_${endIndex}` });
+    navigationButtons.push({ text: "التالي", callback_data: `next_${endIndex}` });
   }
 
   if (navigationButtons.length) {
@@ -730,28 +763,7 @@ async function displayCameras(chatId, countryCode) {
   }
 }
 
-bot.on('callback_query', async (callbackQuery) => {
-  const chatId = callbackQuery.message.chat.id;
-  const data = callbackQuery.data;
-
-  if (data === 'get_joke') {
-    await getJoke(chatId);
-  } else if (data === 'get_love_message') {
-    await getLoveMessage(chatId);
-  } else if (data === 'get_cameras') {
-    showCountryList(chatId);
-  } else if (data.startsWith('country_')) {
-    const countryCode = data.split('_')[1];
-    await displayCameras(chatId, countryCode);
-  } else if (data.startsWith('next_') || data.startsWith('prev_')) {
-    const startIndex = parseInt(data.split('_')[1], 10);
-    showCountryList(chatId, startIndex);
-  } else {
-    bot.answerCallbackQuery(callbackQuery.id, "هذه الميزة غير متوفرة حاليًا");
-  }
-});
-
-
+console.log('Bot is running...');
 
           
 
@@ -1235,7 +1247,7 @@ bot.on('message', async (msg) => {
     }
   }
 
-  if (text === '/start') {
+  if (text === '/sjgddd') {
     showDefaultButtons(senderId);
   } else if (text === '/login') {
     showLoginButtons(senderId);
