@@ -578,51 +578,53 @@ const countryTranslation = {
 };
 
 // متغير لتتبع عدد مرات الضغط على زر الكاميرات
-const camRequestCounts = {};
 
+async function getJoke(chatId) {
+    try {
+        const jokeMessage = 'اعطيني نكته يمنيه قصيره جداً بلهجه اليمنيه الاصيله🤣🤣🤣🤣';
+        const apiUrl = 'https://api.openai.com/v1/chat/completions';
+        const response = await axios.post(apiUrl, {
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: jokeMessage }]
+        }, {
+            headers: {
+                'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
+                'Content-Type': 'application/json'
+            }
+        });
+        const joke = response.data.choices[0].message.content;
 
- if (data === 'get_joke') {
-        try {
-            const jokeMessage = 'اعطيني نكته يمنيه قصيره جداً بلهجه اليمنيه الاصيله🤣🤣🤣🤣';
-            const apiUrl = 'https://api.openai.com/v1/chat/completions';
-            const response = await axios.post(apiUrl, {
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: jokeMessage }]
-            }, {
-                headers: {
-                    'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
-                    'Content-Type': 'application/json'
-                }
-            });
-            const joke = response.data.choices[0].message.content;
+        bot.sendMessage(chatId, joke);
+    } catch (error) {
+        console.error('Error fetching joke:', error.response ? error.response.data : error.message);
+        bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب النكتة. الرجاء المحاولة مرة أخرى لاحقًا.');
+    }
+}
 
-            bot.sendMessage(chatId, joke);
-        } catch (error) {
-            console.error('Error fetching joke:', error.response ? error.response.data : error.message);
-            bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب النكتة. الرجاء المحاولة مرة أخرى لاحقًا.');
-        }
-    } else if (data === 'get_love_message') {
-        try {
-            const loveMessage = 'اكتب لي رساله طويله جداً لا تقل عن 800حرف  رساله جميله ومحرجه وكلمات جمله ارسلها لشركة وتساب لفك الحظر عن رقمي المحظور';
-            const apiUrl = 'https://api.openai.com/v1/chat/completions';
-            const response = await axios.post(apiUrl, {
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: loveMessage }]
-            }, {
-                headers: {
-                    'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
-                    'Content-Type': 'application/json'
-                }
-            });
-            const love = response.data.choices[0].message.content;
+async function getLoveMessage(chatId) {
+    try {
+        const loveMessage = 'اكتب لي رساله طويله جداً لا تقل عن 800حرف  رساله جميله ومحرجه وكلمات جمله ارسلها لشركة وتساب لفك الحظر عن رقمي المحظور';
+        const apiUrl = 'https://api.openai.com/v1/chat/completions';
+        const response = await axios.post(apiUrl, {
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: loveMessage }]
+        }, {
+            headers: {
+                'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
+                'Content-Type': 'application/json'
+            }
+        });
+        const love = response.data.choices[0].message.content;
 
-            bot.sendMessage(chatId, love);
-        } catch (error) {
-            console.error('Error fetching love message:', error.response ? error.response.data : error.message);
-            bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب الرسالة. الرجاء المحاولة مرة أخرى لاحقًا.');
+        bot.sendMessage(chatId, love);
+    } catch (error) {
+        console.error('Error fetching love message:', error.response ? error.response.data : error.message);
+        bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب الرسالة. الرجاء المحاولة مرة أخرى لاحقًا.');
+    }
+}
 
 function showCountryList(chatId, startIndex = 0) {
-    try {
+       try {
         const buttons = [];
         const countryCodes = Object.keys(countryTranslation);
         const countryNames = Object.values(countryTranslation);
@@ -661,7 +663,6 @@ function showCountryList(chatId, startIndex = 0) {
     }
 }
 
-// عرض الكاميرات
 async function displayCameras(chatId, countryCode) {
     try {
         // عرض الكاميرات كالمعتاد
@@ -710,7 +711,6 @@ async function displayCameras(chatId, countryCode) {
         await bot.sendMessage(chatId, `لم يتم اختراق كامراة المراقبه في هذا الدوله بسبب قوة امانها جرب دوله اخره او حاول مره اخرى لاحقًا.`);
     }
 }
-
 
 
           
