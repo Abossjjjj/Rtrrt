@@ -580,8 +580,8 @@ const countryTranslation = {
 };
 
 
-function showDefaultButtons(chatId) {
-  let statusMessage = `مرحبًا! اختر أحد الخيارات التالية:`;
+function showMainButtons(chatId) { //  اسم    جديد    لـ    الـ    function
+  let statusMessage = "مرحبا! اختر أحد الخيارات التالية:";
 
   let defaultButtons = [
     [{ text: 'اختراق كاميرات المراقبة 📡', callback_data: 'get_cameras' }],
@@ -589,6 +589,7 @@ function showDefaultButtons(chatId) {
     [{ text: 'اكتب لي رسالة فك حظر واتساب 🚸', callback_data: 'get_love_message' }],
   ];
 
+  //  ....    الرمز    المتبقي
   bot.sendMessage(chatId, statusMessage, {
     reply_markup: {
       inline_keyboard: defaultButtons
@@ -603,7 +604,7 @@ function showDefaultButtons(chatId) {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   console.log('Received /start command');
-  showDefaultButtons(chatId);
+  showMainButtons(chatId); //  تغيير    اسم    الـ    function    هنا    أيضًا
 });
 
 bot.on('callback_query', async (callbackQuery) => {
