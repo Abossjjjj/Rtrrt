@@ -579,16 +579,6 @@ const countryTranslation = {
     // ... إضافة بقية الدول هنا
 };
 
-const TelegramBot = require('node-telegram-bot-api');
-const axios = require('axios');
-
-// أدخل مفتاح البوت الخاص بك هنا
-const token = 'YOUR_TELEGRAM_BOT_API_KEY_HERE';
-
-// إنشاء البوت
-const bot = new TelegramBot(token, { polling: true });
-
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE';
 
 function showDefaultButtons(chatId) {
   let statusMessage = `مرحبًا! اختر أحد الخيارات التالية:`;
