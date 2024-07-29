@@ -656,10 +656,10 @@ function showCountryList(chatId, startIndex = 0) {
 
   const navigationButtons = [];
   if (startIndex > 0) {
-    navigationButtons.push({ text: "السابق", callback_ `prev_${startIndex - 99}` });
+    navigationButtons.push({ text: "السابق", callback_data:`prev_${startIndex - 99}` });
   }
   if (endIndex < countryCodes.length) {
-    navigationButtons.push({ text: "التالي", callback_ `next_${endIndex}` });
+    navigationButtons.push({ text: "التالي", callback_data:`next_${endIndex}` });
   }
 
   if (navigationButtons.length) {
