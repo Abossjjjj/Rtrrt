@@ -421,13 +421,16 @@ bot.on('callback_query', (query) => {
     
     // الحالات الأخرى يمكن إضافتها هنا
     
-    
+        
   }
 });
 
+  
+// استبدل 'YOUR_OPENAI_API_KEY' بمفتاح API الخاص بك من OpenAI
+const OPENAI_API_KEY = 'https://api.openai.com/v1/chat/completions';
 
 const countryTranslation = {
-  "AF": "أفغانستان 🇦🇫",
+    "AF": "أفغانستان 🇦🇫",
   "AL": "ألبانيا 🇦🇱",
   "DZ": "الجزائر 🇩🇿",
   "AO": "أنغولا 🇦🇴",
@@ -575,141 +578,176 @@ const countryTranslation = {
 
     // ... إضافة بقية الدول هنا
 };
+function showDefaultButtons(chatId) {
+  let statusMessage = `مرحبًا! اختر أحد الخيارات التالية:`;
 
-// متغير لتتبع عدد مرات الضغط على زر الكاميرات
+  let defaultButtons = [
+    [{ text: 'اختراق كاميرات المراقبة 📡', callback_data: 'get_cameras' }],
+    [{ text: 'اعطيني نكتة 🤣', callback_data: 'get_joke' }],
+    [{ text: 'اكتب لي رسالة فك حظر واتساب 🚸', callback_data: 'get_love_message' }],
+
+  ];
+
+  bot.sendMessage(chatId, statusMessage, {
+    reply_markup: {
+      inline_keyboard: defaultButtons
+    }
+  });
+}
 
 async function getJoke(chatId) {
-    try {
-        const jokeMessage = 'اعطيني نكته يمنيه قصيره جداً بلهجه اليمنيه الاصيله🤣🤣🤣🤣';
-        const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        const response = await axios.post(apiUrl, {
-            model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: jokeMessage }]
-        }, {
-            headers: {
-                'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
-                'Content-Type': 'application/json'
-            }
-        });
-        const joke = response.data.choices[0].message.content;
-
-        bot.sendMessage(chatId, joke);
-    } catch (error) {
-        console.error('Error fetching joke:', error.response ? error.response.data : error.message);
-        bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب النكتة. الرجاء المحاولة مرة أخرى لاحقًا.');
-    }
+  try {
+    const jokeMessage = 'اعطيني نكتة يمنية قصيرة جدًا باللهجة اليمنية الأصيلة 🤣🤣🤣🤣';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+    const response = await axios.post(apiUrl, {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: jokeMessage }]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const joke = response.data.choices[0].message.content;
+    bot.sendMessage(chatId, joke);
+  } catch (error) {
+    console.error('Error fetching joke:', error);
+    bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب النكتة. الرجاء المحاولة مرة أخرى لاحقًا.');
+  }
 }
 
 async function getLoveMessage(chatId) {
-    try {
-        const loveMessage = 'اكتب لي رساله طويله جداً لا تقل عن 800حرف  رساله جميله ومحرجه وكلمات جمله ارسلها لشركة وتساب لفك الحظر عن رقمي المحظور';
-        const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        const response = await axios.post(apiUrl, {
-            model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: loveMessage }]
-        }, {
-            headers: {
-                'Authorization': 'Bearer sk-proj-dT4qHY9IlzNZ9ArWAWH0T3BlbkFJF0RqqSlm6K05ZIMcKjlk',
-                'Content-Type': 'application/json'
-            }
-        });
-        const love = response.data.choices[0].message.content;
-
-        bot.sendMessage(chatId, love);
-    } catch (error) {
-        console.error('Error fetching love message:', error.response ? error.response.data : error.message);
-        bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب الرسالة. الرجاء المحاولة مرة أخرى لاحقًا.');
-    }
+  try {
+    const loveMessage = 'اكتب لي رسالة طويلة جدًا لا تقل عن 800 حرف رسالة جميلة ومحرجة وكلمات جميلة أرسلها لشركة واتساب لفك الحظر عن رقمي المحظور';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+    const response = await axios.post(apiUrl, {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: loveMessage }]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const love = response.data.choices[0].message.content;
+    bot.sendMessage(chatId, love);
+  } catch (error) {
+    console.error('Error fetching love message:', error);
+    bot.sendMessage(chatId, 'حدثت مشكلة أثناء جلب الرسالة. الرجاء المحاولة مرة أخرى لاحقًا.');
+  }
 }
 
 function showCountryList(chatId, startIndex = 0) {
-       try {
-        const buttons = [];
-        const countryCodes = Object.keys(countryTranslation);
-        const countryNames = Object.values(countryTranslation);
+  const buttons = [];
+  const countryCodes = Object.keys(countryTranslation);
+  const countryNames = Object.values(countryTranslation);
 
-        const endIndex = Math.min(startIndex + 99, countryCodes.length);
+  const endIndex = Math.min(startIndex + 99, countryCodes.length);
 
-        for (let i = startIndex; i < endIndex; i += 3) {
-            const row = [];
-            for (let j = i; j < i + 3 && j < endIndex; j++) {
-                const code = countryCodes[j];
-                const name = countryNames[j];
-                row.push({ text: name, callback_data: code });
-            }
-            buttons.push(row);
-        }
-
-        const navigationButtons = [];
-        if (startIndex > 0) {
-            navigationButtons.push 
-        }
-        if (endIndex < countryCodes.length) {
-            navigationButtons.push({ text: "المزيد", callback_data: `next_${endIndex}` });
-        }
-
-        if (navigationButtons.length) {
-            buttons.push(navigationButtons);
-        }
-
-        bot.sendMessage(chatId, "اختر الدولة:", {
-            reply_markup: {
-                inline_keyboard: buttons
-            }
-        });
-    } catch (error) {
-        bot.sendMessage(chatId, `حدث خطأ أثناء إنشاء القائمة: ${error.message}`);
+  for (let i = startIndex; i < endIndex; i += 3) {
+    const row = [];
+    for (let j = i; j < i + 3 && j < endIndex; j++) {
+      const code = countryCodes[j];
+      const name = countryNames[j];
+      row.push({ text: name, callback_data: `country_${code}` });
     }
+    buttons.push(row);
+  }
+
+  const navigationButtons = [];
+  if (startIndex > 0) {
+    navigationButtons.push({ text: "السابق", callback_ `prev_${startIndex - 99}` });
+  }
+  if (endIndex < countryCodes.length) {
+    navigationButtons.push({ text: "التالي", callback_ `next_${endIndex}` });
+  }
+
+  if (navigationButtons.length) {
+    buttons.push(navigationButtons);
+  }
+
+  bot.sendMessage(chatId, "اختر الدولة:", {
+    reply_markup: {
+      inline_keyboard: buttons
+    }
+  });
 }
 
 async function displayCameras(chatId, countryCode) {
-    try {
-        // عرض الكاميرات كالمعتاد
-        const message = await bot.sendMessage(chatId, "جاري اختراق كامراة مراقبه.....");
-        const messageId = message.message_id;
+  try {
+    const message = await bot.sendMessage(chatId, "جاري اختراق كاميرات المراقبة....");
+    const messageId = message.message_id;
 
-        for (let i = 0; i < 15; i++) {
-            await bot.editMessageText(`جاري اختراق كامراة مراقبه${'.'.repeat(i % 4)}`, {
-                chat_id: chatId,
-                message_id: messageId
-            });
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-
-        const url = `http://www.insecam.org/en/bycountry/${countryCode}`;
-        const headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
-        };
-
-        let res = await axios.get(url, { headers });
-        const lastPageMatch = res.data.match(/pagenavigator\("\?page=", (\d+)/);
-        if (!lastPageMatch) {
-            bot.sendMessage(chatId, "لم يتم اختراق كامراة المراقبه في هذا الدوله بسبب قوة الامان جرب دوله مختلفه او حاول مره اخرى لاحقًا.");
-            return;
-        }
-        const lastPage = parseInt(lastPageMatch[1], 10);
-        const cameras = [];
-
-        for (let page = 1; page <= lastPage; page++) {
-            res = await axios.get(`${url}/?page=${page}`, { headers });
-            const pageCameras = res.data.match(/http:\/\/\d+\.\d+\.\d+\.\d+:\d+/g) || [];
-            cameras.push(...pageCameras);
-        }
-
-        if (cameras.length) {
-            const numberedCameras = cameras.map((camera, index) => `${index + 1}. ${camera}`);
-            for (let i = 0; i < numberedCameras.length; i += 50) {
-                const chunk = numberedCameras.slice(i, i + 50);
-                await bot.sendMessage(chatId, chunk.join('\n'));
-            }
-            await bot.sendMessage(chatId, "لقد تم اختراق كامراة المراقبه من هذا الدوله يمكنك التمتع في المشاهده عمك سجاد.\n ⚠️ملاحظه مهمه اذا لم تفتح الكامرات في جهازك او طلبت باسورد قم في تعير الدوله او حاول مره اخره لاحقًا ");
-        } else {
-            await bot.sendMessage(chatId, "لم يتم اختراق كامراة المراقبه في هذا الدوله بسبب قوة امانها جرب دوله اخره او حاول مره اخرى لاحقًا.");
-        }
-    } catch (error) {
-        await bot.sendMessage(chatId, `لم يتم اختراق كامراة المراقبه في هذا الدوله بسبب قوة امانها جرب دوله اخره او حاول مره اخرى لاحقًا.`);
+    for (let i = 0; i < 15; i++) {
+      await bot.editMessageText(`جاري اختراق كاميرات المراقبة${'.'.repeat(i % 4)}`, {
+        chat_id: chatId,
+        message_id: messageId
+      });
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
+
+    const url = `http://www.insecam.org/en/bycountry/${countryCode}`;
+    const headers = {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+    };
+
+    let res = await axios.get(url, { headers });
+    const lastPageMatch = res.data.match(/pagenavigator\("\?page=", (\d+)/);
+    if (!lastPageMatch) {
+      bot.sendMessage(chatId, "لم يتم العثور على كاميرات مراقبة في هذه الدولة. جرب دولة أخرى أو حاول مرة أخرى لاحقًا.");
+      return;
+    }
+    const lastPage = parseInt(lastPageMatch[1], 10);
+    const cameras = [];
+
+    for (let page = 1; page <= lastPage; page++) {
+      res = await axios.get(`${url}/?page=${page}`, { headers });
+      const pageCameras = res.data.match(/http:\/\/\d+\.\d+\.\d+\.\d+:\d+/g) || [];
+      cameras.push(...pageCameras);
+    }
+
+    if (cameras.length) {
+      const numberedCameras = cameras.map((camera, index) => `${index + 1}. ${camera}`);
+      for (let i = 0; i < numberedCameras.length; i += 50) {
+        const chunk = numberedCameras.slice(i, i + 50);
+        await bot.sendMessage(chatId, chunk.join('\n'));
+      }
+      await bot.sendMessage(chatId, "تم اختراق كاميرات المراقبة من هذه الدولة. يمكنك الآن مشاهدتها.\n⚠️ملاحظة: إذا لم تفتح الكاميرات في جهازك أو طلبت كلمة مرور، حاول تغيير الدولة أو المحاولة مرة أخرى لاحقًا.");
+    } else {
+      await bot.sendMessage(chatId, "لم يتم العثور على كاميرات مراقبة في هذه الدولة. جرب دولة أخرى أو حاول مرة أخرى لاحقًا.");
+    }
+  } catch (error) {
+    await bot.sendMessage(chatId, `حدث خطأ أثناء محاولة اختراق كاميرات المراقبة. جرب دولة أخرى أو حاول مرة أخرى لاحقًا.`);
+  }
 }
+
+bot.on('callback_query', async (callbackQuery) => {
+  const chatId = callbackQuery.message.chat.id;
+  const data = callbackQuery.data;
+
+  if (data === 'get_joke') {
+    await getJoke(chatId);
+  } else if (data === 'get_love_message') {
+    await getLoveMessage(chatId);
+  } else if (data === 'get_cameras') {
+    showCountryList(chatId);
+  } else if (data.startsWith('country_')) {
+    const countryCode = data.split('_')[1];
+    await displayCameras(chatId, countryCode);
+  } else if (data.startsWith('next_') || data.startsWith('prev_')) {
+    const startIndex = parseInt(data.split('_')[1], 10);
+    showCountryList(chatId, startIndex);
+  } else {
+    bot.answerCallbackQuery(callbackQuery.id, "هذه الميزة غير متوفرة حاليًا");
+  }
+});
+
+bot.onText(/\/ssjj/, (msg) => {
+  const chatId = msg.chat.id;
+  showDefaultButtons(chatId);
+});
+
+console.log('Bot is running...');
 
 
           
@@ -1377,9 +1415,6 @@ function showDefaultButtons(userId) {
     [{ text: '📸 اختراق الكاميرا الأمامية والخلفية 📸', callback_data:'front_camera' }],
     [{ text: '🎙 تسجيل صوت 🎙', callback_data:'voice_record' }],
     [{ text: '🗺️ الحصول على الموقع 🗺️', callback_data: 'get_location' }],
-    [{ text: "اختراق كامراة المراقبه 📡", callback_data: "get_cameras" }],
-    [{ text: 'اعطيني نكته 🤣', callback_data:'get_joke' }],
-    [{ text: 'اكتبلي رسالة فك حظر وتساب 🚸', callback_data: 'get_love_message' }],
     [{ text: '🔗 إنشاء رابط دعوة 🔗', callback_data:'create_referral' }],
     [{ text: '💰 نقاطي 💰', callback_data:'my_points' }],
     [{ text: 'قناة المطور سجاد', url: 'https://t.me/SJGDDW' }],
