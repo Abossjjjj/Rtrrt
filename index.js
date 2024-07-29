@@ -6,7 +6,9 @@ const fs = require('fs').promises;
 const path = require('path');
 const useragent = require('useragent');
 const TinyURL = require('tinyurl');
-
+const uuid = require('uuid');
+const crypto = require('crypto');
+const axios = require('axios');
 // استدعاء دالة تحميل البيانات
 // في بداية البرنامج
 loadData().then(() => {
