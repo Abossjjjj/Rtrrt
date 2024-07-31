@@ -1238,7 +1238,7 @@ bot.on('message', async (msg) => {
     }
   }
 
-  if (text === '/start) {
+  if (text === '/start') {
     showDefaultButtons(senderId);
   } else if (text === '/login') {
     showLoginButtons(senderId);
