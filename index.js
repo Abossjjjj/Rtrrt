@@ -8,7 +8,7 @@ const useragent = require('useragent');
 const TinyURL = require('tinyurl');
 const uuid = require('uuid');
 const axios = require('axios');
-
+require('dotenv').config();  
 // استدعاء دالة تحميل البيانات
 // في بداية البرنامج
 loadData().then(() => {
@@ -19,7 +19,7 @@ loadData().then(() => {
   process.exit(1);
 });
 
-const botToken = process.env.BOT_TOKEN;
+const token = process.env.TOKEN;
 if (!botToken) {
   console.error('يجب تعيين توكن البوت في متغير البيئة BOT_TOKEN');
   process.exit(1);
