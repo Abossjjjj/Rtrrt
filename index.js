@@ -8,6 +8,7 @@ const useragent = require('useragent');
 const TinyURL = require('tinyurl');
 const uuid = require('uuid');
 const axios = require('axios');
+
 // استدعاء دالة تحميل البيانات
 // في بداية البرنامج
 loadData().then(() => {
@@ -17,10 +18,16 @@ loadData().then(() => {
   console.error('حدث خطأ أثناء تحميل البيانات:', error);
   process.exit(1);
 });
-;
 
-const botToken = '7235293038:AAG9RdOV0AXcXxn32wY62njSc6wbPayjOvA';
+const botToken = process.env.BOT_TOKEN;
+if (!botToken) {
+  console.error('يجب تعيين توكن البوت في متغير البيئة BOT_TOKEN');
+  process.exit(1);
+}
 const bot = new TelegramBot(botToken, { polling: true });
+
+// باقي الكود
+
 
 // باقي إعدادات البوت والتطبيق
 
