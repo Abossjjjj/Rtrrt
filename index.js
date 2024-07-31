@@ -19,11 +19,9 @@ loadData().then(() => {
   process.exit(1);
 });
 
-const token = process.env.TOKEN;
+const token = process.env.TELEGRAM_BOT_TOKEN; // استخدم المتغير البيئي للتوكن
+const bot = new TelegramBot(token, { polling: true });
 
-const bot = new telegramBot(token, {
-    polling: true
-});
 // باقي الكود
 
 
