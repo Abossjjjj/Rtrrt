@@ -20,12 +20,10 @@ loadData().then(() => {
 });
 
 const token = process.env.TOKEN;
-if (!botToken) {
-  console.error('يجب تعيين توكن البوت في متغير البيئة BOT_TOKEN');
-  process.exit(1);
-}
-const bot = new TelegramBot(botToken, { polling: true });
 
+const bot = new telegramBot(token, {
+    polling: true
+});
 // باقي الكود
 
 
