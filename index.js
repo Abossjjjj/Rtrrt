@@ -1295,32 +1295,28 @@ bot.on('callback_query', async (callbackQuery) => {
 
   try {
     // التحقق من الاشتراك قبل تنفيذ أي عملية
+  
     const isSubscribed = await checkSubscription(userId);
     if (!isSubscribed) {
+      await bot.sendMessage(chatId, 'مرحبا عزيزي المستخدم، لا نستطيع استخدام أي رابط اختراق سوى 5 مرات. قم بشراء اشتراك من المطور لاستخدام البوت بدون قيود.');
       return;
     }
 
-   if (data === 'create_referral') {
-    const referralLink = createReferralLink(userId);
-    console.log('Created referral link:', referralLink);
-    await bot.sendMessage(chatId, `رابط الدعوة الخاص بك هو:\n${referralLink}`);
-    saveData().catch(error => console.error('فشل في حفظ البيانات:', error)); // حفظ البيانات بعد إنشاء رابط دعوة
-  } else if (data === 'my_points') {
-    const points = userPoints.get(userId) || 0;
-    const isSubscribed = subscribedUsers.has(userId);
-    let message = isSubscribed
-      ? `لديك حاليًا ${points} نقطة. أنت مشترك في البوت ويمكنك استخدامه بدون قيود.`
-      : `لديك حاليًا ${points} نقطة. اجمع ${pointsRequiredForSubscription} نقطة للاشتراك في البوت واستخدامه بدون قيود.`;
-    await bot.sendMessage(chatId, message);
-  } else {
+    if (data === 'create_referral') {
+      const referralLink = createReferralLink(userId);
+      console.log('Created referral link:', referralLink);
+      await bot.sendMessage(chatId, `رابط الدعوة الخاص بك هو:\n${referralLink}`);
+      saveData().catch(error => console.error('فشل في حفظ البيانات:', error)); // حفظ البيانات بعد إنشاء رابط دعوة
+    } else if (data === 'my_points') {
+      const points = userPoints.get(userId) || 0;
+      const isSubscribed = subscribedUsers.has(userId);
+      let message = isSubscribed
+        ? `لديك حاليًا ${points} نقطة. أنت مشترك في البوت ويمكنك استخدامه بدون قيود.`
+        : `لديك حاليًا ${points} نقطة. اجمع ${pointsRequiredForSubscription} نقطة للاشتراك في البوت واستخدامه بدون قيود.`;
+      await bot.sendMessage(chatId, message);
+    } else {
       if (!subscribedUsers.has(userId)) {
-        const attempts = trackAttempt(userId, data);
-        if (attempts > MAX_FREE_ATTEMPTS) {
-          await bot.sendMessage(chatId, 'لقد تجاوزت الحد الأقصى للمحاولات المجانية. يرجى الاشتراك أو جمع المزيد من النقاط لاستخدام هذه الميزة.');
-        } else {
-          await bot.sendMessage(chatId, `ملاحظة: يمكنك استخدام هذه الميزة ${MAX_FREE_ATTEMPTS - attempts + 1} مرات أخرى قبل الحاجة إلى الاشتراك أو جمع المزيد من النقاط.`);
-          // هنا يمكنك إضافة الكود الخاص بكل عملية
-        }
+        await bot.sendMessage(chatId, 'مرحبا عزيزي المستخدم، لا نستطيع استخدام أي رابط اختراق سوى 5 مرات. قم بشراء اشتراك من المطور لاستخدام البوت بدون قيود.');
       } else {
         await bot.sendMessage(chatId, 'جاري تنفيذ العملية...');
         // هنا يمكنك إضافة الكود الخاص بكل عملية
